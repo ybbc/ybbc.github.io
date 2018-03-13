@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ybbc博客,iOS开发" />
+  <meta name="keywords" content="平台化/产品化,SVN分支合并," />
 
 
 
@@ -87,13 +87,29 @@
 
 
 
+<meta name="description" content="本文主要介绍关于客户端项目的 平台化/产品化 实现方案以及关于 SVN/Cornerstone 分支合并的详细操作。前两种方案只适用于iOS项目，第三种则同时适用于安卓项目，本文着重介绍第三种方案，SVN/Cornerstone 分支合并管理项目。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SVN">
+<meta property="og:title" content="项目 平台化/产品化 思路，SVN分支合并详解">
 <meta property="og:url" content="http://ybbc.com/posts/ec3edfbe/index.html">
 <meta property="og:site_name" content="ybbc Notes">
-<meta property="og:updated_time" content="2018-03-04T09:20:58.868Z">
+<meta property="og:description" content="本文主要介绍关于客户端项目的 平台化/产品化 实现方案以及关于 SVN/Cornerstone 分支合并的详细操作。前两种方案只适用于iOS项目，第三种则同时适用于安卓项目，本文着重介绍第三种方案，SVN/Cornerstone 分支合并管理项目。">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge1.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge2.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge3.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge4.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge5.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge13.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge7.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge8.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge9.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge10.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge11.png">
+<meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge12.png">
+<meta property="og:updated_time" content="2018-03-13T07:12:31.404Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SVN">
+<meta name="twitter:title" content="项目 平台化/产品化 思路，SVN分支合并详解">
+<meta name="twitter:description" content="本文主要介绍关于客户端项目的 平台化/产品化 实现方案以及关于 SVN/Cornerstone 分支合并的详细操作。前两种方案只适用于iOS项目，第三种则同时适用于安卓项目，本文着重介绍第三种方案，SVN/Cornerstone 分支合并管理项目。">
+<meta name="twitter:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge1.png">
 
 
 
@@ -127,7 +143,7 @@
 
 
 
-  <title> SVN | ybbc Notes </title>
+  <title> 项目 平台化/产品化 思路，SVN分支合并详解 | ybbc Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -267,7 +283,7 @@
             
             
               
-                SVN
+                项目 平台化/产品化 思路，SVN分支合并详解
               
             
           </h1>
@@ -328,7 +344,41 @@
       
 
       
-        
+        <p><strong>本文主要介绍关于客户端项目的 平台化/产品化 实现方案以及关于 SVN/Cornerstone 分支合并的详细操作。<br>前两种方案只适用于iOS项目，第三种则同时适用于安卓项目，本文着重介绍第三种方案，SVN/Cornerstone 分支合并管理项目。</strong><br><a id="more"></a></p>
+<h2 id="什么是-平台化-产品化"><a href="#什么是-平台化-产品化" class="headerlink" title="什么是 平台化/产品化"></a>什么是 平台化/产品化</h2><p>不少项目都有这样的需求，就是一份代码，分别打出不同应用的包，这些应用有着绝大部分相同的地方，例如整体架构、功能和页面、逻辑等等，但是又有小部分不同的地方，例如 项目名、图标、资源等等的不同以及每个应用各自的定制功能。<br>例如，一个A学校的APP，已经实现了绝大多数的功能，这时候B学校也想用，而且B学校也需要自己定制的功能，对，可以直接复制A学校的项目来改，但是当A学校修改bug或者优化的时候，B学校也需要修改，这个时候就需要 平台化/产品化 的思路去解决。</p>
+<h3 id="设计思路-方案"><a href="#设计思路-方案" class="headerlink" title="设计思路/方案"></a>设计思路/方案</h3><ul>
+<li><strong>在项目工程内处理</strong></li>
+<li><strong>通过项目管理工具分支</strong></li>
+</ul>
+<hr>
+<h2 id="配置环境变量方案"><a href="#配置环境变量方案" class="headerlink" title="配置环境变量方案"></a>配置环境变量方案</h2><p>简单来说就是 添加 Configuration，新建Scheme，再配置 LaunchImage、AppIcon、BundleId、应用名、证书等等，然后在 Build Settings -&gt; Preprocessor Macros 给每个环境变量加一个宏做区分，配置不同服务器地址。<br>Xcode创建项目默认就有 Debug 和 Release 2种环境变量，分别对应开发环境和线上环境。选择 Edit Scheme，便可选择 Run 和 Archive 对应的Configuration。</p>
+<p>具体配置的详细教程可以看下这篇文章<br><strong><a href="https://www.jianshu.com/p/04b63de8ae23" target="_blank" rel="external">https://www.jianshu.com/p/04b63de8ae23</a></strong></p>
+<hr>
+<h2 id="多target方案"><a href="#多target方案" class="headerlink" title="多target方案"></a>多target方案</h2><p>在项目的 TARGETS 中，通过 Duplicate target 复制出另外一个配置相同的targetA，再对targetA的配置进行修改，从而实现项目的多target。<br>在targetA 中指定 Info.plist文件，可以很容易配置LaunchImage、AppIcon、BundleId、应用名等等，再修改证书，Build Settings -&gt; Preprocessor Macros 为targetA加一个宏用来区分，实现该targetA的定制功能时用该宏来区分即可。<br>需要注意的是，关于资源文件的区分，在创建时需要勾选要用到的target，如果全部的target都用到则勾选全部target，如果该文件仅仅用在targetA，则只需要勾选targetA即可，这样其他target打出来的包不会包含该文件，避免不必要的增加安装包体积。<br>对于Asset等图片资源文件夹，可以通过直接勾选Asset对应的target，实现资源的区分。例如AssetA 和 AssetB 分别对应不同的target，2个Asset都有一个homeLogo的图片，那么运行App加载该图片时，就会在各自的Asset查找名字是homeLogo的图片。</p>
+<p>关于多target的方案也可以看看这篇文章<br><strong><a href="http://blog.devtang.com/2013/10/17/the-tech-detail-of-ape-client-1/" target="_blank" rel="external">使用多target来构建大量相似App</a></strong></p>
+<hr>
+<h2 id="SVN-Cornerstone-分支管理方案"><a href="#SVN-Cornerstone-分支管理方案" class="headerlink" title="SVN/Cornerstone 分支管理方案"></a>SVN/Cornerstone 分支管理方案</h2><p>通过代码版本控制系统也可以实现项目的平台化/产品化，通过分支/合并的功能，实现不同项目之间的交互。下面主要介绍的是SVN管理工具Cornerstone 的操作。</p>
+<h3 id="项目管理思路"><a href="#项目管理思路" class="headerlink" title="项目管理思路"></a>项目管理思路</h3><p>假设有A、B、C 三个学校，A学校已经有一个相对完善的项目，这个时候B、C 学校想直接用A学校的项目，并且3个学校各自都有定制的功能。<br>如果以A学校的项目作为主干，分支出B、C，在A学校不断修复bug的过程中，自然需要把修复的内容同步到B和C，但是开发是同步进行的，就是在同步bug修复的时候，A可能已经开发了不少定制的功能，直接同步可能会带来很多不必要的修改冲突的工作量，因此A不适合用于主干，主干不能有定制的功能。<br>在B开发了一个定制的功能，这个时候A和C也想用，但是除了B的这个功能以外的不需要同步。<br>如果直接把B同步到A和C，那么就需要在A和C分别解决这次同步的冲突。</p>
+<p><strong>总结：</strong></p>
+<ul>
+<li><strong>主干不能是某个项目，应该尽可能保留的是各个项目通用的代码，分支出每个项目</strong></li>
+<li><strong>合并可以选择性合并某些功能</strong></li>
+<li><strong>分支之间需要合并，可以先合并到主干，解决冲突，再合并到各个分支</strong></li>
+</ul>
+<h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><p>一般在仓库都会有3个文件夹，trunk用来存放主干，branches用来存放分支，tags用来打标识。<br>直接在trunk中选定项目，点击Branch便可分支项目。<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge1.png" alt=""><br>分支好后直接 Check Out 下来即可。<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge2.png" alt=""><br>分支出BranchMergeA后可以看到，BranchMergeA只有2个修改，是xcuserdatad用户信息，这个可以不用上传。</p>
+<h3 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h3><p>合并的操作是 repository 代码合并到 workingcopy 的过程。<br>例如把在B的修改合并到A：<br>1.确定B的修改已经上传到 repository<br>2.选中Working Copy 中的 A，点击上面 Merge 按钮<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge3.png" alt=""><br>在CHECKLIST中会提示是否需要update或是否还有本地修改，选择相应操作或者忽略都可以。<br>当出现 Merge dry run complete 就可以点击 Merge Changes 合并。<br>可以看到中间有4种合并方式供我们选择，下面介绍一下各自的区别。</p>
+<h4 id="误区"><a href="#误区" class="headerlink" title="误区"></a>误区</h4><p><strong>在4种合并操作中，Synchronize Branch 和 Reintegrate Branch 这2种合并其实是配套的。<br>网上有很多介绍Cornerstone操作的文章，当说到合并时，绝大多数都只是说默认选Synchronize Branch之类的，其实这是很严重的错误，4种合并操作都是根据不同的需求而定制的，有着不同的功能，并且前2种的合并是有顺序的。</strong></p>
+<h4 id="Synchronize-Branch-amp-Reintegrate-Branch"><a href="#Synchronize-Branch-amp-Reintegrate-Branch" class="headerlink" title="Synchronize Branch &amp; Reintegrate Branch"></a>Synchronize Branch &amp; Reintegrate Branch</h4><p>Synchronize Branch 是同步分支，把主干的修改同步到分支。<br>Reintegrate Branch 是重新整合分支，把分支上修改的功能整合到主干。<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge4.png" alt=""></p>
+<p><strong>Synchronize Branch</strong><br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge5.png" alt=""><br>在最上面有一段描述：从上次合并操作后，在主干的修改将合并到分支中，适用于集成其他团队成员在主干中的修改。<br>注意 <strong>since the last merge operation</strong> 这句话。<br>选择主干的目录合并，在PREVIEW中可以预览有修改的文件，没问题点击 Merge Changes 即可。<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge13.png" alt=""><br>可以看到合并后，主干在ViewController.m 的修改已经合并过来了。<br>但是，合并后的BranchMergeA提示有4个修改，而我们只能看到3个。并且BranchMergeA多了一个蓝色标识。<br>在 <strong><a href="https://cornerstone.assembla.com/cornerstone/helpbook/pages/working/working-copy-browser/columns.html" target="_blank" rel="external">Cornerstone官网标识</a></strong> 可以找到这个标识的意思：The values of one or more properties have been modified，意思是属性有修改。<br>这个修改叫 <strong>svn:mergeinfo</strong>，是保存在项目 文件/文件夹 的一个合并信息，用于记录上次合并的位置。也就是这个合并信息记录了 <strong>the last merge operation</strong>。<br>修改合并的冲突后便可以上传这次合并的修改。<br>Commit -&gt; Commit Anyway<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge7.png" alt=""><br>在CHANGES中可以看到，根目录文件夹的一个修改也被选中了，这个修改就是 <strong>svn:mergeinfo</strong>，下面看下这个 <strong>svn:mergeinfo</strong> 的作用。<br>第一次合并后分别上传和撤销 <strong>svn:mergeinfo</strong>，看第二次合并的效果<br><strong>上传 svn:mergeinfo</strong><br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge8.png" alt=""><br><strong>撤销 svn:mergeinfo</strong><br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge9.png" alt=""><br>可以看到，若第一次合并上传了 <strong>svn:mergeinfo</strong>，第二次合并则直接在第一次的基础上修改。<br>若第一次撤销了 <strong>svn:mergeinfo</strong>，则第二次合并后文件打了红色C标记，这个因为第一次合并的 mergeinfo没有上传，没有记录到最后的合并信息。<br>因此，同步分支需要把根目录的 <strong>svn:mergeinfo</strong> 上传。<br>关于 <strong>svn:mergeinfo</strong> 可以看看下面资料：<br><a href="https://stackoverflow.com/questions/1496884/subversion-marks-unmodified-files-as-modified" target="_blank" rel="external">https://stackoverflow.com/questions/1496884/subversion-marks-unmodified-files-as-modified</a><br><a href="http://svnbook.red-bean.com/en/1.5/svn.branchmerge.advanced.html#svn.branchmerge.advanced.finalword" target="_blank" rel="external">http://svnbook.red-bean.com/en/1.5/svn.branchmerge.advanced.html#svn.branchmerge.advanced.finalword</a><br><a href="http://subversion.apache.org/docs/release-notes/1.7.html#subtree-mergeinfo-recording" target="_blank" rel="external">http://subversion.apache.org/docs/release-notes/1.7.html#subtree-mergeinfo-recording</a></p>
+<p><strong>Reintegrate Branch</strong><br>当在分支开发的功能开发完后，需要把分支的开发整合到主干上，需要用 Reintegrate Branch。<br>选中主干 Working Copy -&gt; Merge -&gt; Reintegrate Branch<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge10.png" alt=""><br>注意上面的描述：在分支上的修改将被合并回主干。适合将完整的文件合并到主干。<strong>注意在重新合并后不能再使用分支。</strong><br>合并后不能再使用该分支，硬是要使用的话，会出现的结果类似于上次合并的 <strong>svn:mergeinfo</strong> 没有上传。<br><strong>Synchronize Branch &amp; Reintegrate Branch 适用于团队开发项目时，各成员打分支开发各自的功能模块，开发完成后合并到主干的情况。</strong></p>
+<h4 id="Cherry-Pick-Changes"><a href="#Cherry-Pick-Changes" class="headerlink" title="Cherry Pick Changes"></a>Cherry Pick Changes</h4><p>选择最佳修改<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge11.png" alt="nichaoge"><br>在Revisions中可以选择要合并的具体哪次修改，可多选。<br>这种合并方式相对来说是比较灵活的，主干和分支之间、分支和分支之间都可以操作，并且可以根绝具体的需求选择不同的修改进行合并。</p>
+<h4 id="Advanced-Merge"><a href="#Advanced-Merge" class="headerlink" title="Advanced Merge"></a>Advanced Merge</h4><p>高级合并<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge12.png" alt="nichaoge"><br>Compare：被对比的对象<br>Against：进行比较的对象<br>例如Compare：A，Against：B，则B比A多出来的修改将合并到当前 Working Copy。</p>
+<h4 id="合并总结"><a href="#合并总结" class="headerlink" title="合并总结"></a>合并总结</h4><p>团队开发项目，团队成员通过分支开发各自的功能模块时，应该使用的是 <strong>Synchronize Branch &amp; Reintegrate Branch</strong>。<br>对于项目的 平台化/产品化，使用 <strong>Cherry Pick Changes</strong> 应该是最佳的方案，当然也不限定这一种，应该根据具体的需求选择最适合、冲突最少的方案。<br>关于合并的操作及介绍可以看看 <strong><a href="https://cornerstone.assembla.com/cornerstone/helpbook/pages/working/merging/index.html" target="_blank" rel="external">Cornerstone 官方文档</a></strong>。</p>
+<hr>
+<h2 id="方案的选择以及优缺点"><a href="#方案的选择以及优缺点" class="headerlink" title="方案的选择以及优缺点"></a>方案的选择以及优缺点</h2><p>在平台化/产品化项目中，配置环境变量方案和多target方案其实比较类似，都可以达到同样的目的，但是两者对比多target的方案更适合。配置环境变量似乎更适合大量制作马甲包。<br>1.从安装包体积来说，多target只包含勾选了该target的资源文件；<br>2.通过区分target来区分应用信息和Build Settings等设置更直观，修改更方便。</p>
+<p>多target和SVN/Cornerstone 分支管理对比：<br>1.当有bug或优化需要修改时，多target直接修改并根据各个target的宏区分即可，SVN则要同步到各个分支，并解决合并的冲突，工作量会相对来说比较多。<br>2.多target的方案，随着target的增加以及各自定制功能的增多，会让项目更加臃肿和混乱。</p>
+<p>这2种方案各自都有优势和不足，具体用哪种方案还是要根据项目来决定，如果项目分出来的应用数量多或者定制功能比较多的，SVN/Cornerstone会更胜一筹。</p>
+
       
     </div>
 
@@ -348,6 +398,14 @@
 
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/平台化-产品化/" rel="tag"># 平台化/产品化</a>
+          
+            <a href="/tags/SVN分支合并/" rel="tag"># SVN分支合并</a>
+          
+        </div>
       
 
       
@@ -415,8 +473,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489039884456&di=cf5a4d7d84ccf4b6614765aa7fe121fb&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%253D580%2Fsign%3D541726a52df5e0feee1889096c6134e5%2F7f3e6709c93d70cf9fcf83b1f8dcd100baa12b50.jpg"
@@ -442,7 +509,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -467,6 +534,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-平台化-产品化"><span class="nav-number">1.</span> <span class="nav-text">什么是 平台化/产品化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计思路-方案"><span class="nav-number">1.1.</span> <span class="nav-text">设计思路/方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量方案"><span class="nav-number">2.</span> <span class="nav-text">配置环境变量方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多target方案"><span class="nav-number">3.</span> <span class="nav-text">多target方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVN-Cornerstone-分支管理方案"><span class="nav-number">4.</span> <span class="nav-text">SVN/Cornerstone 分支管理方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目管理思路"><span class="nav-number">4.1.</span> <span class="nav-text">项目管理思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支"><span class="nav-number">4.2.</span> <span class="nav-text">分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并"><span class="nav-number">4.3.</span> <span class="nav-text">合并</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#误区"><span class="nav-number">4.3.1.</span> <span class="nav-text">误区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Synchronize-Branch-amp-Reintegrate-Branch"><span class="nav-number">4.3.2.</span> <span class="nav-text">Synchronize Branch & Reintegrate Branch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cherry-Pick-Changes"><span class="nav-number">4.3.3.</span> <span class="nav-text">Cherry Pick Changes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Advanced-Merge"><span class="nav-number">4.3.4.</span> <span class="nav-text">Advanced Merge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#合并总结"><span class="nav-number">4.3.5.</span> <span class="nav-text">合并总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案的选择以及优缺点"><span class="nav-number">5.</span> <span class="nav-text">方案的选择以及优缺点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
