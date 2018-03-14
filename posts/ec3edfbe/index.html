@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge10.png">
 <meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge11.png">
 <meta property="og:image" content="http://omlcvd7bk.bkt.clouddn.com/BranchMerge12.png">
-<meta property="og:updated_time" content="2018-03-13T07:12:31.404Z">
+<meta property="og:updated_time" content="2018-03-14T09:03:01.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="项目 平台化/产品化 思路，SVN分支合并详解">
 <meta name="twitter:description" content="本文主要介绍关于客户端项目的 平台化/产品化 实现方案以及关于 SVN/Cornerstone 分支合并的详细操作。前两种方案只适用于iOS项目，第三种则同时适用于安卓项目，本文着重介绍第三种方案，SVN/Cornerstone 分支合并管理项目。">
@@ -345,7 +345,7 @@
 
       
         <p><strong>本文主要介绍关于客户端项目的 平台化/产品化 实现方案以及关于 SVN/Cornerstone 分支合并的详细操作。<br>前两种方案只适用于iOS项目，第三种则同时适用于安卓项目，本文着重介绍第三种方案，SVN/Cornerstone 分支合并管理项目。</strong><br><a id="more"></a></p>
-<h2 id="什么是-平台化-产品化"><a href="#什么是-平台化-产品化" class="headerlink" title="什么是 平台化/产品化"></a>什么是 平台化/产品化</h2><p>不少项目都有这样的需求，就是一份代码，分别打出不同应用的包，这些应用有着绝大部分相同的地方，例如整体架构、功能和页面、逻辑等等，但是又有小部分不同的地方，例如 项目名、图标、资源等等的不同以及每个应用各自的定制功能。<br>例如，一个A学校的APP，已经实现了绝大多数的功能，这时候B学校也想用，而且B学校也需要自己定制的功能，对，可以直接复制A学校的项目来改，但是当A学校修改bug或者优化的时候，B学校也需要修改，这个时候就需要 平台化/产品化 的思路去解决。</p>
+<h2 id="什么是-平台化-产品化"><a href="#什么是-平台化-产品化" class="headerlink" title="什么是 平台化/产品化"></a>什么是 平台化/产品化</h2><p>不少项目都有这样的需求，就是一份代码，分别打出不同应用的包，这些应用有着绝大部分相同的地方，例如整体架构、功能和页面、逻辑等等，但是又有小部分不同的地方，例如 项目名、图标、资源等等的不同以及每个应用各自的定制功能。<br>例如，对于教育类学校的APP来说，基本的功能都比较类似，当一个学校开发完善了一个APP，那么其他的学校就可以直接套用了，加上自己的定制功能，快速创建出一个新的APP。</p>
 <h3 id="设计思路-方案"><a href="#设计思路-方案" class="headerlink" title="设计思路/方案"></a>设计思路/方案</h3><ul>
 <li><strong>在项目工程内处理</strong></li>
 <li><strong>通过项目管理工具分支</strong></li>
@@ -358,11 +358,9 @@
 <p>关于多target的方案也可以看看这篇文章<br><strong><a href="http://blog.devtang.com/2013/10/17/the-tech-detail-of-ape-client-1/" target="_blank" rel="external">使用多target来构建大量相似App</a></strong></p>
 <hr>
 <h2 id="SVN-Cornerstone-分支管理方案"><a href="#SVN-Cornerstone-分支管理方案" class="headerlink" title="SVN/Cornerstone 分支管理方案"></a>SVN/Cornerstone 分支管理方案</h2><p>通过代码版本控制系统也可以实现项目的平台化/产品化，通过分支/合并的功能，实现不同项目之间的交互。下面主要介绍的是SVN管理工具Cornerstone 的操作。</p>
-<h3 id="项目管理思路"><a href="#项目管理思路" class="headerlink" title="项目管理思路"></a>项目管理思路</h3><p>假设有A、B、C 三个学校，A学校已经有一个相对完善的项目，这个时候B、C 学校想直接用A学校的项目，并且3个学校各自都有定制的功能。<br>如果以A学校的项目作为主干，分支出B、C，在A学校不断修复bug的过程中，自然需要把修复的内容同步到B和C，但是开发是同步进行的，就是在同步bug修复的时候，A可能已经开发了不少定制的功能，直接同步可能会带来很多不必要的修改冲突的工作量，因此A不适合用于主干，主干不能有定制的功能。<br>在B开发了一个定制的功能，这个时候A和C也想用，但是除了B的这个功能以外的不需要同步。<br>如果直接把B同步到A和C，那么就需要在A和C分别解决这次同步的冲突。</p>
-<p><strong>总结：</strong></p>
-<ul>
-<li><strong>主干不能是某个项目，应该尽可能保留的是各个项目通用的代码，分支出每个项目</strong></li>
-<li><strong>合并可以选择性合并某些功能</strong></li>
+<h3 id="项目管理思路"><a href="#项目管理思路" class="headerlink" title="项目管理思路"></a>项目管理思路</h3><ul>
+<li><strong>主干尽可能是各个项目通用的代码，而不是某个项目，避免合并时过多的冲突</strong></li>
+<li><strong>合并可以选择性合并某些功能，例如同步bug和优化等</strong></li>
 <li><strong>分支之间需要合并，可以先合并到主干，解决冲突，再合并到各个分支</strong></li>
 </ul>
 <h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><p>一般在仓库都会有3个文件夹，trunk用来存放主干，branches用来存放分支，tags用来打标识。<br>直接在trunk中选定项目，点击Branch便可分支项目。<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge1.png" alt=""><br>分支好后直接 Check Out 下来即可。<br><img src="http://omlcvd7bk.bkt.clouddn.com/BranchMerge2.png" alt=""><br>分支出BranchMergeA后可以看到，BranchMergeA只有2个修改，是xcuserdatad用户信息，这个可以不用上传。</p>
