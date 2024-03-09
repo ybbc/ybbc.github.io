@@ -2,18 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://nichaoge.com/hx.html</loc>
+    <loc>http://nichaoge.com/review.html</loc>
     
-    <lastmod>2023-07-27</lastmod>
+    <lastmod>2024-03-09</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://nichaoge.com/review.html</loc>
+    <loc>http://nichaoge.com/iosreviewother.html</loc>
     
-    <lastmod>2023-07-24</lastmod>
+    <lastmod>2023-12-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://nichaoge.com/reviewdemo.html</loc>
+    
+    <lastmod>2023-11-30</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,7 +31,34 @@
   <url>
     <loc>http://nichaoge.com/resign.html</loc>
     
-    <lastmod>2023-07-24</lastmod>
+    <lastmod>2023-11-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://nichaoge.com/iosreview43.html</loc>
+    
+    <lastmod>2023-11-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://nichaoge.com/hx.html</loc>
+    
+    <lastmod>2023-11-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://nichaoge.com/applereview.html</loc>
+    
+    <lastmod>2023-11-30</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -40,7 +76,7 @@
 
   <url>
     <loc>http://nichaoge.com/</loc>
-    <lastmod>2023-07-27</lastmod>
+    <lastmod>2024-03-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
